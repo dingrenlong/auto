@@ -1,4 +1,4 @@
-package org.base.service;
+package com.auto.base;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

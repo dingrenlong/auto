@@ -7,5 +7,7 @@
   <packaging>pom</packaging>
   <modules>
     <module>base-service</module>
+    <module>base-site</module>
+    <module>site-admin</module>
   </modules>
 </project>

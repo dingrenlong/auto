@@ -1,4 +1,4 @@
-package org.base.service;
+package com.auto.base;
 
 /**
  * Hello world!
