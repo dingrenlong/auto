@@ -7,9 +7,7 @@
     <artifactId>auto</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <groupId>com.auto</groupId>
   <artifactId>base-service</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
   <name>base-service</name>
   <url>http://maven.apache.org</url>
   <properties>
