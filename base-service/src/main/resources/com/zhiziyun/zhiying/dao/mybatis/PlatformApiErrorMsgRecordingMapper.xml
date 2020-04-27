@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zhiziyun.zhiying.base.api.dao.mapper.PlatformApiErrorMsgRecordingMapper">
+	<resultMap type="com.zhiziyun.zhiying.base.api.bean.PlatformApiErrorMsgRecording" id="BaseResultMap">
+        <result column="id" property="id"/>
+        <result column="is_valid" property="valid"/>
+        <result column="is_deleted" property="deleted"/>
+        <result column="ctime" property="ctime"/>
+        <result column="utime" property="utime"/>
+		<result property="errorMsgId" column="errorMsgId" />
+		<result property="apiCode" column="apiCode" />
+		<result property="platform" column="platform" />
+		<result property="apiUrl" column="apiUrl" />
+		<result property="errorTime" column="errorTime" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+        id, is_valid, is_deleted, ctime, utime, errorMsgId, apiCode, platform, apiUrl, errorTime
+	</sql>
+
+	<sql id="Base_Where_Clause">
+		<where>
+			1 = 1
+            <if test="id != null">and id = #{id}</if>
+            <if test="valid != null">and is_valid = #{valid}</if>
+            <if test="deleted != null">and is_deleted = #{deleted}</if>
+            <if test="errorMsgId != null"> AND errorMsgId=#{errorMsgId}</if>
+			<if test="apiCode != null"> AND apiCode=#{apiCode}</if>
+			<if test="platform != null"> AND platform=#{platform}</if>
+			<if test="apiUrl != null"> AND apiUrl=#{apiUrl}</if>
+            <!--开始结束时间-->
+            <if test="minErrorTime != null and maxErrorTime != null">
+                <if test="minErrorTime == maxErrorTime">
+                    and date_format(errorTime,'%Y-%m-%d') = date_format(#{maxErrorTime},'%Y-%m-%d')
+                </if>
+                <if test="minErrorTime != maxErrorTime">
+                    and date_format(errorTime,'%Y-%m-%d') between #{minErrorTime} and #{maxErrorTime}
+                </if>
+            </if>
+		</where>
+	</sql>
+
+	<insert id="add" useGeneratedKeys="true" keyProperty="code">
+		insert into
+		platform_api_error_msg_recording(ctime, utime, errorMsgId,apiCode, platform, apiUrl, errorTime)
+		values(now(), now(), #{errorMsgId}, #{apiCode}, #{platform}, #{apiUrl}, now())
+	</insert>
+
+	<update id="update" parameterType="com.zhiziyun.zhiying.base.api.bean.PlatformApiErrorMsgRecording">
+		update platform_api_error_msg_recording set
+		updateTime=now(),
+        errorMsgId=#{errorMsgId},
+        apiCode=#{apiCode},
+        platform=#{platform},
+        apiUrl=#{apiUrl},
+        errorTime=#{errorTime},
+		<!-- zzyMsgTemplate=#{zzyMsgTemplate} -->
+		WHERE id=#{id} 
+	</update>
+
+	<update id="updateBySelective" parameterType="com.zhiziyun.zhiying.base.api.bean.PlatformApiErrorMsgRecording">
+    	update platform_api_error_msg_recording set
+    	updateTime = now()
+    	<if test="errorMsgId != null">,errorMsgId = #{errorMsgId}</if>
+    	<if test="apiCode != null">,apiCode = #{apiCode}</if>
+    	<if test="platform != null">,platform=#{platform}</if>
+    	<if test="apiUrl != null">,apiUrl=#{apiUrl}</if>
+    	<if test="errorTime != null">,errorTime=#{errorTime}</if>
+		WHERE id=#{id} 
+    </update>
+
+	<delete id="delete">
+		delete from platform_api_error_msg_recording where
+		id=#{id}
+	</delete>
+
+	<select id="queryById" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from platform_api_error_msg_recording where id=#{id}
+	</select>
+
+	<select id="queryByList" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from platform_api_error_msg_recording
+		<include refid="Base_Where_Clause" />
+		<if test="pager.mySQLOrderCondition != null and pager.mySQLOrderCondition != ''" >
+	      ${pager.mySQLOrderCondition}
+	    </if>
+	    <if test="pager.mySQLQueryCondition != null and pager.mySQLQueryCondition != ''" >
+	      ${pager.mySQLQueryCondition}
+	    </if>
+	</select>
+
+	<select id="queryByCount" resultType="java.lang.Integer">
+		select count(1)
+		from platform_api_error_msg_recording
+		<include refid="Base_Where_Clause" />
+	</select>
+</mapper>
