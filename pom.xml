@@ -11,7 +11,7 @@
     <module>site-admin</module>
   </modules>
   <properties>
-		<spring.version>4.3.11.RELEASE</spring.version>
+		<spring.version>5.3.18</spring.version>
 		<spring-data-core.version>1.13.7.RELEASE</spring-data-core.version>
 		<spring-data-jpa.version>1.11.7.RELEASE</spring-data-jpa.version>
 		<spring-data-mongodb.version>1.10.7.RELEASE</spring-data-mongodb.version>
